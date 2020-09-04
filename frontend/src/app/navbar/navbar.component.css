@@ -1,0 +1,42 @@
+.navbar {
+    min-height: 70px;
+    font-size: 2.3rem !important;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    transition: background 0.3s linear;
+    background: #00693C;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: right;
+    width: 100%;
+}
+
+.nav-link {
+    color: white;
+    font-weight: medium;
+    margin-right: 50px;
+}
+
+.nav-link-secondary {
+    color: white;
+    font-weight: medium;
+    margin-right: 30px;
+}
+
+.nav-agh-logo {
+    margin-top: 5px;
+    max-height: 70px;
+}
+
+.nav-agh-logo-img {
+    max-height: 70px;
+    margin-right: 10px
+}
+
+.icon {
+    margin-right: 10px;
+}
+
+   
