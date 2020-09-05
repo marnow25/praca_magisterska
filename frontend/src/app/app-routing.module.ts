@@ -3,14 +3,24 @@ import { Routes, RouterModule } from '@angular/router';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { SignUpComponent } from './user/sign-up/sign-up.component';
 import { UserComponent } from './user/user.component';
+import { SignInComponent } from './user/sign-in/sign-in.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AuthGuard } from './auth/auth.guard'
 
 const routes: Routes = [
- { 
-   path: 'signup', component: UserComponent,
-   children: [{ path: '', component: SignUpComponent }]
+  {
+    path: 'signup', component: UserComponent,
+    children: [{ path: '', component: SignUpComponent }]
   },
   {
-    path: '', redirectTo: '/signup', pathMatch: 'full'
+    path: 'login', component: UserComponent,
+    children: [{ path: '', component: SignInComponent }]
+  },
+  {
+    path: 'userprofile', component: UserProfileComponent, canActivate: [AuthGuard]
+  },
+  {
+    path: '', redirectTo: '/login', pathMatch: 'full'
   }
 ];
 

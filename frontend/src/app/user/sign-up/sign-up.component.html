@@ -1,3 +1,7 @@
+<div>
+    <img src="assets/img/agh_logo.jpg" id="icon"/>
+</div>
+
 <form #signUpForm="ngForm" (ngSubmit)="signUpForm.valid && onSubmit(signUpForm)">
     <input type="text" #login="ngModel" [(ngModel)]="userService.selectedUser.login" name="login" placeholder="Login"
     required  [ngClass]="{'invalid-textbox' :signUpForm.submitted && !login.valid }">
