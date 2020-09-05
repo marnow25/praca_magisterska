@@ -36,7 +36,7 @@ h2 {
   text-transform: uppercase;
   display:inline-block;
   margin: 40px 8px 10px 8px; 
-  color: #cccccc;
+  color: #eeeeee;
 }
 
 
@@ -80,7 +80,7 @@ h2 {
 /* TABS */
 
 h2.inactive {
-  color: #636060;
+  color: #999999;
 }
 
 h2.active {
