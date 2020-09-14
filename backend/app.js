@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 require('./config/config')
+//require('./models/user.model')
 const fs = require('fs')
 var dir = './'
 
@@ -20,7 +21,7 @@ connect.once('open', () => {
     })
 })
 
-require('./models/user.model')
+require('./models/db')
 require('./config/passportConfig')
 const cors = require('cors')
 const express = require('express')
@@ -191,7 +192,7 @@ app.get('/videos-list/:caption/:tags/:dateFrom/:dateTill', (req, res, next) => {
 /* DOWNLOAD SECTION */
 
 // Download all files
-app.get('/videos-all-download', (req, res, next) => {
+app.get('/video-all-download', (req, res, next) => {
     gfs.find().toArray((err, files) => {
         if (!files || files.length === 0) {
             return res.status(200).json({
