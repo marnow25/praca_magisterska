@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 require('./config/config')
-//require('./models/user.model')
 const fs = require('fs')
 var dir = './'
 
