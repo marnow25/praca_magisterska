@@ -1,0 +1,48 @@
+<div class="parent">
+    <div style="text-align:center;">
+        <form [formGroup]="filterFormGroup" (ngSubmit)="onSubmit(filterFormGroup)">
+            <fieldset formGroupName="notification">
+                <div *ngIf="filterFormGroup.get('notification')?.errors?.atLeastOneRequired" class="alert alert-primary" role="alert" style="width: 50%; margin-top: 1em;margin-left: 25%;">
+                    {{filterFormGroup.get('notification')?.errors?.atLeastOneRequired.text}}
+                </div>
+                <div class="tags-form">
+                    <mat-form-field class="half-width" appearance="outline">
+                        <input matInput placeholder="Provide tags" formControlName="tagsControl">
+                    </mat-form-field>
+                </div>
+
+                <div class="date-start-form">
+                    <mat-form-field class="half-width" appearance="outline">
+                        <input matInput [ngxMatDatetimePicker]="pickerStartDate" placeholder="Choose start date"
+                            formControlName="startDateControl">
+                        <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #pickerStartDate [showSpinners]="true" [showSeconds]="true"
+                            [stepHour]="1" [stepMinute]="1" [stepSecond]="1" [color]="color"
+                            [enableMeridian]="enableMeridian" [disableMinute]="disableMinute">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                </div>
+
+                <div class="date-end-form">
+                    <mat-form-field class="half-width" appearance="outline">
+                        <input matInput [ngxMatDatetimePicker]="pickerEndDate" placeholder="Choose end date"
+                            formControlName="endDateControl">
+                        <mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #pickerEndDate [showSpinners]="true" [showSeconds]="true"
+                            [stepHour]="1" [stepMinute]="1" [stepSecond]="1" [color]="color"
+                            [enableMeridian]="enableMeridian">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <button class="btn btn-secondary" type="reset" (click)="revert()"
+                        style="text-align:right ;margin-right:1vw">Reset all filters</button>
+                    <button class="btn btn-danger" type="submit" style="text-align:right;"
+                        [disabled]="filterFormGroup.get('notification')?.errors?.atLeastOneRequired">Apply filters</button>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="card"
+    style="background-color: rgb(255, 255, 255); border-radius: 5px; margin-top: 30px; text-align:center; width: 60%; margin-left: 20%">
+    <div class="card-header" style="text-align:left;">
+        <h4>Upload File</h4>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <form [formGroup]="uploadFormGroup" (ngSubmit)="onSubmit()">
+                    <div style="text-align: center; margin-top: 2rem; margin-bottom: 2rem;">
+                        <div *ngIf="fileSizeAlert" class="alert alert-danger" role="alert"
+                            style="border-radius: 5px; width: 90%; margin-left: 5%">
+                            Maximum size of video is 10mb.
+                        </div>
+                        <p style="text-align: left; margin-left: 10%; margin-top: 3rem;">
+                            Select file to upload:
+                        </p>
+                        <label class="btn btn-primary" style=" border-radius: 5px; width: 80%;">
+                            <input type="file" name="profile" (change)="onFileSelect($event)" />
+                            <i class="fa fa-folder-open" aria-hidden="true"></i> Browse files
+                        </label>
+                        <p *ngIf="uploadFormGroup.get('profile')?.value?.name" style="width: 80%; margin-left: 10%">
+                            Selected file: {{uploadFormGroup.get('profile').value.name}}
+                        </p>
+                    </div>
+
+                    <div class="caption-form" style="margin-bottom: 0; margin-top: 0;">
+                        <mat-form-field style="width: 80%; margin-bottom: 0;">
+                            <input matInput placeholder="Provide caption" formControlName="captionControl">
+                            <mat-error *ngIf="uploadFormGroup.get('captionControl')?.errors">Caption is required!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="camera-form" style="margin-bottom: 0; margin-top: 0;">
+                        <mat-form-field style="width: 80%; ">
+                            <input matInput placeholder="Provide camera" formControlName="cameraControl">
+                            <mat-error *ngIf="uploadFormGroup.get('cameraControl')?.errors">Camera is required!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="tags-form">
+                        <mat-form-field style="width: 80%">
+                            <input matInput placeholder="Provide tags" formControlName="tagsControl">
+                            <mat-error *ngIf="uploadFormGroup.get('tagsControl')?.errors">Tags are required!</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="date-start-form">
+                        <mat-form-field style="width: 80%">
+                            <input matInput [ngxMatDatetimePicker]="pickerStartDate" placeholder="Choose start date"
+                                formControlName="startDateControl">
+                            <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+                            <ngx-mat-datetime-picker #pickerStartDate [showSpinners]="true" [showSeconds]="true"
+                                [stepHour]="1" [stepMinute]="1" [stepSecond]="1" [color]="color"
+                                [enableMeridian]="enableMeridian" [disableMinute]="disableMinute">
+                            </ngx-mat-datetime-picker>
+                            <mat-error *ngIf="uploadFormGroup.get('startDateControl')?.errors">Start date is required!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <button type="submit" class="btn btn-success"
+                            style="margin-top: 4rem; margin-bottom: 2rem; width: 80%;"><span
+                                class="fa fa-upload"></span> Upload</button>
+                    </div>
+                </form>
+
+                <div *ngIf="fileService.uploadFailFlagSubject.value" class="alert alert-error" role="alert"
+                    style="padding: 1rem; border-radius: 5px; width: 90%; margin-left: 5%;">
+                    Please set proper fields!
+                </div>
+
+                <div *ngIf="uploadSuccessAlert" class="alert alert-success" role="alert"
+                    style="padding: 1rem; border-radius: 5px; width: 90%; margin-left: 5%;">
+                    File successfully uploaded!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="example-box" cdkDrag>
+    Drag me around
+  </div>

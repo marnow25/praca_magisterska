@@ -1,0 +1,42 @@
+.submit-button {
+    padding: 5px;
+    float: right;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+}
+
+.time{
+    padding: 5px;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+}
+
+.date{
+    padding: 5px;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+}
+
+.tags{
+    padding: 5px;    
+}
+
+.tags-form {
+   width: 100%;
+}
+
+.half-width {
+    width: 50%;
+}
+
+.quarter-width {
+    width: 25%;
+}
+
+::ng-deep 
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.5em 0 1em 0 !important;
+}

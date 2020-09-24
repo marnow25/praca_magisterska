@@ -20,7 +20,7 @@ export class UserProfileComponent implements OnInit {
       },
       err => {}
     )
-  }
+  }A
 
   onLogout() {
     this.userService.deleteToken()

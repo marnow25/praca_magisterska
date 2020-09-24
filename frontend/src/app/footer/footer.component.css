@@ -1,5 +1,8 @@
-footer {
-    padding: 5rem 0;
-    color: black !important;
+.footer {
+  background-color: #dc3545;
+  color: white;
+  text-align: center;
+  height: 100%;
+  padding: 0.5vw;
+  border-radius: 5px;
 }
-   

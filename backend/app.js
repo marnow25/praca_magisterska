@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 require('./config/config')
 const fs = require('fs')
-var dir = './'
+var dir = 'C:/Users/Marcin/Desktop/magisterka/projekt/'
+require('./models/db')
 
 // Server connection
 const connect = mongoose.createConnection(process.env.MONGODB_URI, {
@@ -20,7 +21,7 @@ connect.once('open', () => {
     })
 })
 
-require('./models/db')
+
 require('./config/passportConfig')
 const cors = require('cors')
 const express = require('express')
@@ -52,7 +53,7 @@ app.use((err, req, res, next) => {
 const storage = new GridFsStorage({
     url: process.env.MONGODB_URI,
     file: (req, file) => {
-        console.log(req.body)
+        //console.log(req)
         return new Promise((resolve, reject) => {
             const filename = file.originalname
             const splittedTags = req.body.tags.split(',')
@@ -62,6 +63,7 @@ const storage = new GridFsStorage({
                 metadata: {
                     caption: req.body.caption,
                     tags: splittedTags,
+                    camera: req.body.camera,
                     date: req.body.date
                 }
             }
@@ -73,6 +75,9 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 app.post('/video-upload', upload.single('file'), (req, res, next) => {
+    res.status(200).json({
+        success: true
+    })
 })
 
 /* LIST SECTION */
@@ -115,30 +120,49 @@ app.get('/videos-list/:caption', (req, res, next) => {
 })
 
 // Filtering by caption and tags to a list
-app.get('/videos-list/:caption/:tags', (req, res, next) => {
+app.get('/videos-list/:caption/:tags', async (req, res, next) => {
     const splittedTags = req.params.tags.split('&')
-    gfs.find({
+    let tmpArray
+    await gfs.find({
+        "metadata.caption": { $nin: [req.params.caption] }
+    }).toArray((err,files) => {
+        tmpArray = files
+    })
+    await gfs.find({
         "metadata.caption": req.params.caption,
         "metadata.tags": { $all: splittedTags }
     })
         .toArray((err, files) => {
             if (!files[0] || files.length === 0) {
+                const voidResponseArrayWithCaption = [{ metadata: { caption: req.params.caption}}]
+                tmpArray = tmpArray.concat(voidResponseArrayWithCaption)
+                tmpArray.sort((a, b) => a.metadata.caption.localeCompare(b.metadata.caption))
                 return res.status(200).json({
                     success: false,
-                    message: 'No files available',
+                    files: tmpArray,
                 });
             } else {
+                files = files.concat(tmpArray)
+                files.sort((a, b) => a.metadata.caption.localeCompare(b.metadata.caption))
                 return res.status(200).json({
                     success: true,
                     files: files,
                 })
             }
         })
+
 })
 
 // Filtering by caption and date to a list
-app.get('/videos-list/:caption/:dateFrom/:dateTill', (req, res, next) => {
-    gfs.find({
+app.get('/videos-list/:caption/:dateFrom/:dateTill', async (req, res, next) => {
+    let tmpArray
+    await gfs.find({
+        "metadata.caption": { $nin: [req.params.caption] }
+    }).toArray((err,files) => {
+        tmpArray = files
+    })
+
+    await gfs.find({
         "metadata.caption": req.params.caption,
         "metadata.date": {
             $gte: req.params.dateFrom,
@@ -147,11 +171,16 @@ app.get('/videos-list/:caption/:dateFrom/:dateTill', (req, res, next) => {
     })
         .toArray((err, files) => {
             if (!files[0] || files.length === 0) {
+                const voidResponseArrayWithCaption = [{ metadata: { caption: req.params.caption}}]
+                tmpArray = tmpArray.concat(voidResponseArrayWithCaption)
+                tmpArray.sort((a, b) => a.metadata.caption.localeCompare(b.metadata.caption))
                 return res.status(200).json({
                     success: false,
-                    message: 'No files available',
+                    files: tmpArray,
                 });
             } else {
+                files = files.concat(tmpArray)
+                files.sort((a, b) => a.metadata.caption.localeCompare(b.metadata.caption))
                 return res.status(200).json({
                     success: true,
                     files: files,
@@ -161,9 +190,15 @@ app.get('/videos-list/:caption/:dateFrom/:dateTill', (req, res, next) => {
 })
 
 // Filtering by caption, tags and date to list
-app.get('/videos-list/:caption/:tags/:dateFrom/:dateTill', (req, res, next) => {
+app.get('/videos-list/:caption/:tags/:dateFrom/:dateTill', async (req, res, next) => {
     const splittedTags = req.params.tags.split('&')
-    gfs.find({
+    let tmpArray
+    await gfs.find({
+        "metadata.caption": { $nin: [req.params.caption] }
+    }).toArray((err,files) => {
+        tmpArray = files
+    })
+    await gfs.find({
         "metadata.caption": req.params.caption,
         "metadata.tags": { $all: splittedTags },
         "metadata.date": {
@@ -173,11 +208,16 @@ app.get('/videos-list/:caption/:tags/:dateFrom/:dateTill', (req, res, next) => {
     })
         .toArray((err, files) => {
             if (!files[0] || files.length === 0) {
+                const voidResponseArrayWithCaption = [{ metadata: { caption: req.params.caption}}]
+                tmpArray = tmpArray.concat(voidResponseArrayWithCaption)
+                tmpArray.sort((a, b) => a.metadata.caption.localeCompare(b.metadata.caption))
                 return res.status(200).json({
                     success: false,
-                    message: 'No files available',
+                    files: tmpArray,
                 });
             } else {
+                files = files.concat(tmpArray)
+                files.sort((a, b) => a.metadata.caption.localeCompare(b.metadata.caption))
                 return res.status(200).json({
                     success: true,
                     files: files,
@@ -192,27 +232,31 @@ app.get('/videos-list/:caption/:tags/:dateFrom/:dateTill', (req, res, next) => {
 
 // Download all files
 app.get('/video-all-download', (req, res, next) => {
-    gfs.find().toArray((err, files) => {
+     gfs.find().toArray((err, files) => {
         if (!files || files.length === 0) {
+            console.log('dupa')
             return res.status(200).json({
                 success: false,
                 message: 'No files available'
             });
         } else {
-            for (let [key, value] in Object.entries(files)) {
-                if (!fs.existsSync(dir + '/videos/' + files[key].metadata.caption + '/')) {
-                    fs.mkdirSync(dir + '/videos/' + files[key].metadata.caption + '/');
+            let counter = []
+            for (let key in files) {
+                counter.push(files)
+                if (!fs.existsSync(dir + 'frontend/src/assets/videos/' + files[key].metadata.caption + '/')) {
+                    fs.mkdirSync(dir + 'frontend/src/assets/videos/' + files[key].metadata.caption + '/');
                 }
-                var fs_write_stream = fs.createWriteStream(path.join(dir, '/videos/' + files[key].metadata.caption + '/' + files[key].filename))
+                var fs_write_stream = fs.createWriteStream(path.join(dir, 'frontend/src/assets/videos/' + files[key].metadata.caption + '/' + files[key].filename))
                 var readstream = gfs.openDownloadStreamByName(files[key].filename)
                 readstream.pipe(fs_write_stream)
                 fs_write_stream.on('close', function () {
-                    console.log('File: ' + files[key].filename + ' downloaded successfully!')
+                    //console.log('File: ' + files[key].filename + ' downloaded successfully!')
                 })
             }
             return res.status(200).json({
                 success: true,
-                message: 'All successfully downloaded.'
+                message: 'All successfully downloaded.',
+                counter: counter
             })
         }
     })
@@ -230,7 +274,7 @@ app.get('/video/:caption', (req, res, next) => {
                     message: 'No files available',
                 });
             } else {
-                for (let [key, value] in Object.entries(files)) {
+                for ( key in files) {
                     if (!fs.existsSync(dir + '/videos/' + files[key].metadata.caption + '/')) {
                         fs.mkdirSync(dir + '/videos/' + files[key].metadata.caption + '/');
                     }
@@ -263,7 +307,7 @@ app.get('/video/:caption/:tags', (req, res, next) => {
                     message: 'No files available',
                 });
             } else {
-                for (let [key, value] in Object.entries(files)) {
+                for (let key in files) {
                     if (!fs.existsSync(dir + '/videos/' + files[key].metadata.caption + '/')) {
                         fs.mkdirSync(dir + '/videos/' + files[key].metadata.caption + '/');
                     }
@@ -298,7 +342,7 @@ app.get('/video/:caption/:dateFrom/:dateTill', (req, res, next) => {
                     message: 'No files available',
                 });
             } else {
-                for (let [key, value] in Object.entries(files)) {
+                for (let key in files) {
                     if (!fs.existsSync(dir + '/videos/' + files[key].metadata.caption + '/')) {
                         fs.mkdirSync(dir + '/videos/' + files[key].metadata.caption + '/');
                     }
@@ -320,6 +364,10 @@ app.get('/video/:caption/:dateFrom/:dateTill', (req, res, next) => {
 // Filtering by caption, tags and date & download
 app.get('/video/:caption/:tags/:dateFrom/:dateTill', (req, res, next) => {
     const splittedTags = req.params.tags.split('&')
+    console.log(req.params.caption)
+    console.log(req.params.splittedTags)
+    console.log(req.params.dateFroms)
+    console.log(eq.params.dateTill)
     gfs.find({
         "metadata.caption": req.params.caption,
         "metadata.tags": { $all: splittedTags },
@@ -335,7 +383,7 @@ app.get('/video/:caption/:tags/:dateFrom/:dateTill', (req, res, next) => {
                     message: 'No files available',
                 });
             } else {
-                for (let [key, value] in Object.entries(files)) {
+                for (let key in files) {
                     if (!fs.existsSync(dir + '/videos/' + files[key].metadata.caption + '/')) {
                         fs.mkdirSync(dir + '/videos/' + files[key].metadata.caption + '/');
                     }

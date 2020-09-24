@@ -1,0 +1,32 @@
+<div class="search-video-group-form">
+    <div style="text-align:center; background-color: rgb(255, 255, 255); padding-top: 1rem; border-radius: 5px;">
+        <form [formGroup]="searchForm" (ngSubmit)="onSubmit(searchForm)">
+            <mat-form-field class="eigthy-width" appearance="outline">
+                <input matInput placeholder="Search for video group" formControlName="videoGroupSearchId">
+                <mat-error *ngIf="formError">Video group cannot be find!</mat-error>
+            </mat-form-field>
+            <button class="btn btn-danger twenty-width" type="submit" style="text-align:center;">Search</button>
+        </form>
+        <div *ngIf="formError" class="alert alert-primary" role="alert" style="margin-bottom: 1rem;">
+            Video group cannot be find!
+        </div>
+    </div>
+</div>
+
+<div id="accordion">
+    <div class="card" *ngFor="let item of captionsArray; let i = index" role="tablist" aria-multiselectable="true">
+        <div class="card-header" id="'heading' + i">
+            <h5 class="mb-0">
+                <button class="btn btn-danger" data-toggle="collapse" [attr.data-target]="'#collapse'+i"
+                    aria-expanded="true" [attr.aria-controls]="'collapse' + i" id="btn_{{item}}">
+                    Video Group: {{item}}
+                </button>
+            </h5>
+        </div>
+        <div [attr.id]="'collapse'+i" class="collapse" [attr.aria-labelledby]="'heading' + i" data-parent="">
+            <div class="card-body">
+                <app-timeline [videosArray]="timelineVideosDividedArray[i]"></app-timeline>
+            </div>
+        </div>
+    </div>
+</div>

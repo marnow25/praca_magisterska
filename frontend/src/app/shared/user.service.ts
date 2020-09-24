@@ -22,15 +22,15 @@ export class UserService {
   // HTTP Methods
 
   postUser(user: User) {
-    return this.http.post(environment.apiBaseUrl + '/register', user, this.noAuthHeader);
+    return this.http.post(environment.apiBaseUrl + '/api/register', user, this.noAuthHeader);
   }
 
   login(authCredentials) {
-    return this.http.post(environment.apiBaseUrl + '/authenticate', authCredentials, this.noAuthHeader);
+    return this.http.post(environment.apiBaseUrl + '/api/authenticate', authCredentials, this.noAuthHeader);
   }
 
   getUserProfile() {
-    return this.http.get(environment.apiBaseUrl + '/userProfile');
+    return this.http.get(environment.apiBaseUrl + '/api/userProfile');
   }
 
   // JWT Helper methods

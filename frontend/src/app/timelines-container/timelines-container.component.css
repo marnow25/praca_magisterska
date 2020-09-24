@@ -1,0 +1,33 @@
+#accordion {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.card {
+    background-color: rgb(68, 67, 67);
+}
+
+.card-header {
+    background-color: rgb(133, 133, 133);
+}
+
+.search-video-group-form {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.eigthy-width {
+    width: 90%;
+    top: 0.1rem;
+    /* background-color: white; */
+}
+
+.twenty-width{
+    width: 5rem;
+    height: 3.1rem;
+    margin-top: 0
+}

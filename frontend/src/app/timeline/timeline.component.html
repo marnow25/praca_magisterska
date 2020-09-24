@@ -1,0 +1,126 @@
+<div *ngIf="videosArray.length == 2 || videosArray.length == 1 else normalSizeBlock" style="margin-bottom: 3vw;">
+    <a data-toggle="collapse" href="#filtersForm{{videosArray[0].caption}}" role="button" aria-expanded="true"
+        aria-controls="collapseExample1" class="btn btn-secondary btn-block py-2 shadow-sm with-chevron">
+        <p class="d-flex align-items-center justify-content-between mb-0 px-3 py-2"><strong class="text-uppercase">Set
+                Filters</strong><i class="fa fa-angle-down"></i></p>
+    </a>
+    <div id="filtersForm{{videosArray[0].caption}}" class="collapse shadow-sm">
+        <div class="card">
+            <div class="card-body">
+                <app-filter-form [videosCaption]="videosArray[0].caption"></app-filter-form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #normalSizeBlock>
+    <div>
+        <a data-toggle="collapse" href="#filtersForm{{videosArray[0].caption}}" role="button" aria-expanded="true"
+            aria-controls="collapseExample1" class="btn btn-secondary btn-block py-2 shadow-sm with-chevron">
+            <p class="d-flex align-items-center justify-content-between mb-0 px-3 py-2"><strong
+                    class="text-uppercase">Set
+                    Filters</strong><i class="fa fa-angle-down"></i></p>
+        </a>
+        <div id="filtersForm{{videosArray[0].caption}}" class="collapse shadow-sm">
+            <div class="card">
+                <div class="card-body">
+                    <app-filter-form [videosCaption]="videosArray[0].caption"></app-filter-form>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<div *ngIf="videosArray[0].fileName else alertBlock">
+    <div id="accordion{{videosArray[0].caption}}" style="margin-top: 1.5rem; margin-bottom: 0.5rem;" >
+        <div class="card" *ngFor="let item of camerasArray; let cam = index" role="tablist" aria-multiselectable="true" style='background-color: rgb(90, 90, 90);' cdkDrag>
+            <div class="card-header" id="'heading' + videosArray[0].caption + cam">
+                <h5 class="mb-0">
+                    <button class="btn btn-info" data-toggle="collapse" [attr.data-target]="'#collapse'+ videosArray[0].caption + cam"
+                        aria-expanded="true" [attr.aria-controls]="'collapse' + videosArray[0].caption + cam">
+                        Camera: {{item}}
+                    </button>
+                </h5>
+            </div>
+            <div [attr.id]="'collapse'+ videosArray[0].caption + cam" class="collapse " [attr.aria-labelledby]="'heading' + videosArray[0].caption + cam" data-parent="">
+                <div class="card-body" style='background-color: rgb(56, 56, 56);'>
+                    <div class="container-timeline">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div style="display:inline-block;width:100%;overflow-y:auto;" id="style-3">
+                                    <ul class="timeline timeline-horizontal">
+                                        <li class="timeline-item"
+                                            *ngFor="let item of cameraVideosGroupArray[cam]; let i = index">
+                                            <video style="display: none;" width="480" preload="metadata" controls
+                                                src="assets/videos/{{item.caption}}/{{item.fileName}}"
+                                                id={{i}}_{{item.caption}}_{{item.camera}}_{{item.fileName}}
+                                                (loadedmetadata)="onMetadata($event, video)"></video>
+                                            <div class="timeline-badge primary">{{item.fileStartDate[3]}}
+                                                {{item.fileStartDate[0] + ' ' + item.fileStartDate[1] + ' ' + item.fileStartDate[2]}}
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <div class="timeline-body">
+                                                    <mat-video #video title={{item.fileName}} [autoplay]="false"
+                                                        preload="none" [fullscreen]="true" [download]="true"
+                                                        [showFrameByFrame]="true" [quality]="false" color="primary"
+                                                        spinner="split-ring" [overlay]="true" [keyboard]="false"
+                                                        src='assets/videos/{{item.caption}}/{{item.fileName}}'
+                                                        [loop]="false"
+                                                        id={{i}}_video_{{item.caption}}_{{item.camera}}_{{item.fileName}}
+                                                        type="video/mp4">
+                                                    </mat-video>
+                                                </div>
+                                            </div>
+                                            <div class="buttons-container"
+                                                style="position: relative; bottom: 3.8rem; left: 0.5rem;">
+                                                <div class="col-12 text-right">
+                                                    <button
+                                                        id={{i}}_btn_0.25_{{item.caption}}_{{item.camera}}_{{item.fileName}}
+                                                        class="btn btn-info btn-xs"
+                                                        (click)="changeSpeed(0.25, {id: i, caption: item.caption, camera: item.camera, fileName: item.fileName })">0.25x</button>
+                                                    <button
+                                                        id={{i}}_btn_0.5_{{item.caption}}_{{item.camera}}_{{item.fileName}}
+                                                        class="btn btn-info btn-xs"
+                                                        (click)="changeSpeed(0.5, {id: i, caption: item.caption, camera: item.camera, fileName: item.fileName })">0.5x</button>
+                                                    <button
+                                                        id={{i}}_btn_1.0_{{item.caption}}_{{item.camera}}_{{item.fileName}}
+                                                        class="btn btn-info btn-xs"
+                                                        (click)="changeSpeed(1, {id: i, caption: item.caption, camera: item.camera, fileName: item.fileName })">1x</button>
+                                                    <button
+                                                        id={{i}}_btn_2.0_{{item.caption}}_{{item.camera}}_{{item.fileName}}
+                                                        class="btn btn-info btn-xs"
+                                                        (click)="changeSpeed(2, {id: i, caption: item.caption, camera: item.camera, fileName: item.fileName })">2x</button>
+                                                    <button
+                                                        id={{i}}_btn_5.0_{{item.caption}}_{{item.camera}}_{{item.fileName}}
+                                                        class="btn btn-info btn-xs"
+                                                        (click)="changeSpeed(5, {id: i, caption: item.caption, camera: item.camera, fileName: item.fileName })">5x</button>
+                                                    <button
+                                                        id={{i}}_btn_{{item.caption}}_{{item.camera}}_{{item.fileName}}
+                                                        class="btn btn-info btn-xs"
+                                                        (click)="captureFrame({id: i, caption: item.caption, camera: item.camera, fileName: item.fileName })">Capture
+                                                        Frame</button>
+                                                </div>
+                                            </div>
+                                            <canvas #canvas
+                                                id={{i}}_canvas_{{item.caption}}_{{item.camera}}_{{item.fileName}}
+                                                style="display: none"></canvas>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
+<ng-template #alertBlock>
+    <div class="jumbotron" style="margin: 6vw 3vw 3vw 3vw;">
+        <h2 style="color:#202529; margin: 0">Unfortunately!</h2>
+        <p class="lead">There are no videos that match your criteria. Correct your filters, please. </p>
+        <hr class="my-4">
+    </div>
+</ng-template>
