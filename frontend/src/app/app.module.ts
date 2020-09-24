@@ -40,6 +40,7 @@ import { TimelineComponent } from './timeline/timeline.component';
 import { TimelinesContainerComponent } from './timelines-container/timelines-container.component';
 import { FilterFormComponent } from './filter-form/filter-form.component';
 import { UploadDownloadComponent } from './upload-download/upload-download.component';
+import { BannerComponent } from './banner/banner.component';
 
 // other
 import { AuthGuard } from './auth/auth.guard'
@@ -50,6 +51,7 @@ import { VgCoreModule } from 'videogular2/compiled/core'
 import { VgControlsModule } from 'videogular2/compiled/controls';
 import { VgOverlayPlayModule } from 'videogular2/compiled/overlay-play';
 import { VgBufferingModule } from 'videogular2/compiled/buffering';
+
 
 
 
@@ -68,7 +70,9 @@ import { VgBufferingModule } from 'videogular2/compiled/buffering';
     FileSelectDirective, 
     FileDropDirective, 
     TimelineComponent, 
-    TimelinesContainerComponent, FilterFormComponent,
+    TimelinesContainerComponent, 
+    FilterFormComponent, 
+    BannerComponent,
   ],
   imports: [
     BrowserModule,

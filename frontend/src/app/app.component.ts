@@ -7,10 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'flexible-video-archive';
-
-  slides = [
-    { image: "assets/img/baner1.jpg" }, 
-    { image: "assets/img/baner2.jpg" }, 
-    { image: "assets/img/baner3.jpg" }
-  ]
 }
