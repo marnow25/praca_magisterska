@@ -65,7 +65,11 @@ export class UploadDownloadComponent implements OnInit {
       formData.append('date', date)
       formData.append('file', file);
       this.fileService.uploadFile(formData)
-      setTimeout(() => {}, 1000)
+      setTimeout(() => {
+        this.fileService.updateUploadSuccessFlagSubject(false);
+        this.uploadFormGroup.reset()
+        this.uploadFormGroup.markAsUntouched();
+      }, 5000)
     } else {
       this.fileService.updateUploadFailFlagSubject(true);
       this.fileService.updateUploadSuccessFlagSubject(false);

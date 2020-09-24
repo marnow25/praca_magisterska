@@ -27,11 +27,8 @@ export class TimelinesContainerComponent implements OnInit {
     this.fileService.downloadAllVideos()
     this.fileService.allVideosList.subscribe(data => {
       this.videosArray = data
-      console.log(this.videosArray)
       this.captionsArray = this.populateCaptionsArray(this.videosArray)
-      console.log(this.captionsArray)
       this.timelineVideosDividedArray = this.divideVideosByCaption(this.captionsArray, this.videosArray)
-      console.log(this.timelineVideosDividedArray)
     })
   }
 

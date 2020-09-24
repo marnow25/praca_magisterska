@@ -9,6 +9,7 @@ export class TimelineComponent implements OnInit, OnChanges {
 
   camerasArray;
   cameraVideosGroupArray;
+  restoreDefaultPositionDrag = false
 
   @Input()
   videosArray;
@@ -16,25 +17,13 @@ export class TimelineComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnChanges() {
-    console.log(this.videosArray)
     this.camerasArray = this.countCameras(this.videosArray)
     this.cameraVideosGroupArray = this.divideVideosByCamera(this.camerasArray, this.videosArray)
-    console.log(this.cameraVideosGroupArray)
   }
 
   ngOnInit() {
-    console.log(this.videosArray)
     this.camerasArray = this.countCameras(this.videosArray)
     this.cameraVideosGroupArray = this.divideVideosByCamera(this.camerasArray, this.videosArray)
-    console.log(this.cameraVideosGroupArray)
-  }
-
-  log(val) { console.log(val); }
-
-  onMetadata(e, video) {
-    //console.log('metadata: ', e);
-    //console.log(video.duration);
-    //console.log(video)
   }
 
   captureFrame(htmlIds) {
@@ -87,11 +76,22 @@ export class TimelineComponent implements OnInit, OnChanges {
       let tmpArray = []
       for (let vidKey in videosArrayTmp) {
         if (videosArrayTmp[vidKey].camera === cameraArray[cameraKey])
-        tmpArray.push(videosArrayTmp[vidKey])
+          tmpArray.push(videosArrayTmp[vidKey])
       }
       resultArray.push(tmpArray)
     }
     return resultArray
+  }
+
+  onDragEnded(event): void {
+    if (this.restoreDefaultPositionDrag) {
+      this.restoreDefaultPositionDrag = false
+      event.source._dragRef.reset();
+    }
+  }
+
+  myFunction() {
+    this.restoreDefaultPositionDrag = true
   }
 
 }
