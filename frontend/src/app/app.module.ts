@@ -12,7 +12,6 @@ import {
   NgxMatNativeDateModule, 
   NgxMatTimepickerModule 
 } from '@angular-material-components/datetime-picker';
-
 import { DragDropModule } from '@angular/cdk/drag-drop'
 
 // angular materials
@@ -32,7 +31,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { UserComponent } from './user/user.component';
 import { SignUpComponent } from './user/sign-up/sign-up.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SignInComponent } from './user/sign-in/sign-in.component';
 import { UserService } from './shared/user.service';
 import { MainPageComponent } from './main-page/main-page.component';
@@ -41,20 +39,13 @@ import { TimelinesContainerComponent } from './timelines-container/timelines-con
 import { FilterFormComponent } from './filter-form/filter-form.component';
 import { UploadDownloadComponent } from './upload-download/upload-download.component';
 import { BannerComponent } from './banner/banner.component';
+import { MatrixListContainerComponent } from './matrix-list-container/matrix-list-container.component';
+import { FilterMatrixComponent } from './filter-matrix/filter-matrix.component';
+import { FavouriteContainerComponent } from './favourite-container/favourite-container.component';
 
 // other
 import { AuthGuard } from './auth/auth.guard'
 import { AuthInterceptor } from './auth/auth.interceptor'
-
-// videogular2
-import { VgCoreModule } from 'videogular2/compiled/core'
-import { VgControlsModule } from 'videogular2/compiled/controls';
-import { VgOverlayPlayModule } from 'videogular2/compiled/overlay-play';
-import { VgBufferingModule } from 'videogular2/compiled/buffering';
-
-
-
-
 
 @NgModule({
   declarations: [
@@ -63,7 +54,6 @@ import { VgBufferingModule } from 'videogular2/compiled/buffering';
     FooterComponent,
     UserComponent,
     SignUpComponent,
-    UserProfileComponent,
     SignInComponent,
     MainPageComponent,
     UploadDownloadComponent,
@@ -72,7 +62,10 @@ import { VgBufferingModule } from 'videogular2/compiled/buffering';
     TimelineComponent, 
     TimelinesContainerComponent, 
     FilterFormComponent, 
-    BannerComponent,
+    BannerComponent, 
+    MatrixListContainerComponent, 
+    FilterMatrixComponent, 
+    FavouriteContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +78,7 @@ import { VgBufferingModule } from 'videogular2/compiled/buffering';
     NgxMaterialTimepickerModule,
     NgxMatDatetimePickerModule,
     DragDropModule,
+    BrowserAnimationsModule,
 
     // Angular materials
     MatNativeDateModule,
@@ -97,12 +91,6 @@ import { VgBufferingModule } from 'videogular2/compiled/buffering';
     MatButtonModule,
     MatCarouselModule.forRoot(),
 
-    // videogular2
-    VgCoreModule,
-    VgControlsModule,
-    VgOverlayPlayModule,
-    VgBufferingModule,
-    BrowserAnimationsModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

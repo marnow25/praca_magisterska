@@ -17,7 +17,7 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit() {
     if(this.userService.isLoggedIn()) {
-      this.router.navigateByUrl('/userprofile');
+      this.router.navigateByUrl('');
     }
   }
 

@@ -108,33 +108,24 @@ export class FilterFormComponent implements OnInit {
   }
 
   sendData(filterValues) {
-    const voidTable = []
     const fakeStartDate = new Date("September 14, 1900 12:00:00").toISOString()
     const fakeEndDate = new Date("September 14, 2100 12:00:00").toISOString()
     let tags = filterValues.tagsControl
     let startDate = filterValues.startDateControl
     let endDate = filterValues.endDateControl
-    console.log(tags)
-    console.log(startDate)
-    console.log(endDate)
     if (typeof tags !== 'undefined' && tags) {
       tags = tags.split(' ')
       if (typeof startDate !== 'undefined' && startDate && typeof endDate !== 'undefined' && endDate) {
-        console.log('jestem')
         startDate = startDate.toISOString()
         endDate = endDate.toISOString()
         this.fileService.filterVideosList(this.videosCaption, tags, startDate, endDate)
       } else if (typeof startDate !== 'undefined' && startDate) {
-        console.log('jestem1')
         startDate = startDate.toISOString()
         this.fileService.filterVideosList(this.videosCaption, tags, startDate, fakeEndDate)
       } else if (typeof endDate !== 'undefined' && endDate) {
-        console.log('jestem2')
         endDate = endDate.toISOString()
         this.fileService.filterVideosList(this.videosCaption, tags, fakeStartDate, endDate)
       } else {
-        console.log('jestem3')
-        console.log(tags)
         this.fileService.filterVideosList(this.videosCaption, tags)
       }
     } else if (typeof startDate !== 'undefined' && startDate && typeof endDate !== 'undefined' && endDate) {

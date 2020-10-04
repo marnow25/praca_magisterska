@@ -1,21 +1,26 @@
-<div>
-    <img src="assets/img/agh_logo.jpg" id="icon"/>
+<div style="margin-top: 2rem; margin-bottom: 2rem">
+  <img src="assets/img/play.png" id="icon" style="width: 150px;" />
+  <p id="paragraph" style="margin-top: 0.5rem;">Flexible Video Archive</p>
 </div>
 
-<form #signInForm="ngForm" (ngSubmit)="signInForm.valid && onSubmit(signInForm)">
-    <input type="text" name="email" #email="ngModel" [(ngModel)]="model.email" placeholder="Email" [pattern]="emailRegex" required
-      [ngClass]="{'invalid-textbox' :signInForm.submitted && !email.valid }">
+<div class="form-style-8">
+  <form #signInForm="ngForm" (ngSubmit)="signInForm.valid && onSubmit(signInForm)">
+    <input type="text" name="email" #email="ngModel" [(ngModel)]="model.email" placeholder="Email"
+      [pattern]="emailRegex" required [ngClass]="{'invalid-textbox' :signInForm.submitted && !email.valid }">
     <div *ngIf="signInForm.submitted && email.errors?.pattern">
-      <label class="validation-message">Invalid email address.</label>
+      <label class="validation-message"  style="color: #dc3545">Invalid email address.</label>
     </div>
-    <input type="password" name="password" #password="ngModel" [(ngModel)]="model.password" placeholder="Password" required minlength="8"
-      [ngClass]="{'invalid-textbox' :signInForm.submitted && !password.valid }">
+    <input type="password" name="password" #password="ngModel" [(ngModel)]="model.password" placeholder="Password"
+      required minlength="8" [ngClass]="{'invalid-textbox' :signInForm.submitted && !password.valid }">
     <div *ngIf="signInForm.submitted && password.errors?.minlength">
-      <label class="validation-message">Password must contain at least 8 characters.</label>
+      <label class="validation-message" style="color: #dc3545">Password must contain at least 8 characters.</label>
     </div>
-    <input type="submit" value="Log In">
+    <div>
+      <input type="submit" value="Log In">
+    </div>
   </form>
+</div>
 
-  <div class="alert" *ngIf="serverErrorMessage">
-      {{serverErrorMessage}}
-  </div>
+<div class="alert" *ngIf="serverErrorMessage">
+  {{serverErrorMessage}}
+</div>

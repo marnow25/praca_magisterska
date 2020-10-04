@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http'
+import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http'
 import { environment } from '../../environments/environment'
-import { Observable, Subject, of, BehaviorSubject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -15,6 +15,10 @@ export class FileService {
   public uploadSuccessFlagSubject = new BehaviorSubject<any>(false)
 
   public uploadFailFlagSubject = new BehaviorSubject<any>(false)
+
+  public matrixFilterListSubject = new BehaviorSubject<any>([])
+
+  public favouriteFilterListSubject = new BehaviorSubject<any>([])
 
   constructor(private http: HttpClient) {
     this.allVideosList = this.allVideosListSubject.asObservable();
@@ -32,6 +36,13 @@ export class FileService {
     this.uploadFailFlagSubject.next(data);
   }
 
+  public updateMatrixFilterListSubject(data) {
+    this.matrixFilterListSubject.next(data);
+  }
+
+  public updateFavouriteFilterListSubject(data) {
+    this.favouriteFilterListSubject.next(data);
+  }
 
   public showAllVideosList() {
     return this.http.get(environment.apiBaseUrl + '/videos-list', { observe: "response" }).subscribe(data => {
@@ -44,9 +55,7 @@ export class FileService {
   }
 
   public downloadAllVideos() {
-    return this.http.get(environment.apiBaseUrl + '/video-all-download', { observe: "response" }).subscribe(data => {
-      console.log(data.body['message'])
-    })
+    return this.http.get(environment.apiBaseUrl + '/video-all-download', { observe: "response" }).subscribe(data => { },  err => { console.log(err) })
   }
 
   public filterVideosList(caption: string, tags?: Array<string>, dateFrom?, dateTill?) {
@@ -54,39 +63,26 @@ export class FileService {
       const tagsString = tags.join('&')
       if (typeof dateFrom !== 'undefined' && dateFrom && typeof dateTill !== 'undefined' && dateTill) {
         this.http.get(environment.apiBaseUrl + '/videos-list' + '/' + caption + '/' + tagsString + '/' + dateFrom + '/' + dateTill, { observe: "response" }).subscribe(data => {
-          if (data.body['success'])
-            this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
-          else
-            this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
+          this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
         },
           err => { console.log(err) }
         )
       } else {
         this.http.get(environment.apiBaseUrl + '/videos-list' + '/' + caption + '/' + tagsString, { observe: "response" }).subscribe(data => {
-          if (data.body['success'])
-            this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
-          else
-            this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
+          this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
         },
           err => { console.log(err) }
         )
       }
     } else if (dateFrom && dateTill) {
       this.http.get(environment.apiBaseUrl + '/videos-list' + '/' + caption + '/' + dateFrom + '/' + dateTill, { observe: "response" }).subscribe(data => {
-        if (data.body['success']) {
-          this.allVideosList.subscribe(data => console.log(data))
-          this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
-        } else
-          this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
+        this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
       },
         err => { console.log(err) }
       )
     } else {
       this.http.get(environment.apiBaseUrl + '/videos-list' + '/' + caption, { observe: "response" }).subscribe(data => {
-        if (data.body['success'])
-          this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
-        else
-          this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
+        this.updateAllVideosListSubject(this.parseFilterResponse(data.body['files']))
       },
         err => { console.log(err) })
     }
@@ -142,6 +138,39 @@ export class FileService {
       } else {
         this.updateUploadFailFlagSubject(true)
       }
+    })
+  }
+
+  public deleteFile(caption, filename) {
+    this.http.get(environment.apiBaseUrl + '/video-delete' + '/' + caption + '/' + filename, { observe: "response" }).subscribe(
+      (data) => { },  err => { console.log(err) })
+  }
+
+  public filterMatrixVideosList(caption: string, tags: Array<string>, dateFrom, dateTill) {
+    this.http.get(environment.apiBaseUrl + '/videos-list-matrix' + '/' + caption + '/' + tags + '/' + dateFrom + '/' + dateTill, { observe: "response" }).subscribe(data => {
+      this.updateMatrixFilterListSubject(this.parseMatrixFilterResponse(data.body['files']))
+    },
+      err => {
+        console.log(err)
+      })
+
+  }
+
+  private parseMatrixFilterResponse(files) {
+    files = this.sortByDate(files)
+    files = this.sortByCaption(files)
+    let filesNameList = []
+    for (let key in files) {
+      filesNameList.push({ fileName: files[key].filename, caption: files[key].metadata.caption })
+    }
+    return filesNameList
+  }
+
+  public filterFavouriteVideosList(videosList) {
+    let params = new HttpParams();
+    params = params.append('videosList', videosList);
+    this.http.post(environment.apiBaseUrl + '/videos-list-favourite', { params: params }, { observe: "response" }).subscribe(data => {
+      this.updateFavouriteFilterListSubject(data.body["files"])
     })
   }
 

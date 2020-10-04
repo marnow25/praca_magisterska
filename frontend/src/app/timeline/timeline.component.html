@@ -54,10 +54,6 @@
                                     <ul class="timeline timeline-horizontal">
                                         <li class="timeline-item"
                                             *ngFor="let item of cameraVideosGroupArray[cam]; let i = index">
-                                            <!-- <video style="display: none;" width="480" preload="metadata" controls
-                                                src="assets/videos/{{item.caption}}/{{item.fileName}}"
-                                                id={{i}}_{{item.caption}}_{{item.camera}}_{{item.fileName}}
-                                                (loadedmetadata)="onMetadata($event, video)"></video> -->
                                             <div class="timeline-badge primary">{{item.fileStartDate[3]}}
                                                 {{item.fileStartDate[0] + ' ' + item.fileStartDate[1] + ' ' + item.fileStartDate[2]}}
                                             </div>
@@ -77,6 +73,14 @@
                                             <div class="buttons-container"
                                                 style="position: relative; bottom: 3.8rem; left: 0.5rem;">
                                                 <div class="col-12 text-right">
+                                                    <button *ngIf="login === 'admin'"
+                                                        id={{i}}_delete_{{item.caption}}_{{item.camera}}_{{item.fileName}}
+                                                        class="btn btn-warning btn-xs"
+                                                        (click)="modalDeleteVideo({caption: item.caption, fileName: item.fileName })">Delete</button>
+                                                    <button
+                                                        id={{i}}_favourite_{{item.caption}}_{{item.camera}}_{{item.fileName}}
+                                                        class="btn btn-success btn-xs" style="margin-right: 0.5rem;"
+                                                        (click)="favouriteVideo({caption: item.caption, fileName: item.fileName })">Favourite</button>
                                                     <button
                                                         id={{i}}_btn_0.25_{{item.caption}}_{{item.camera}}_{{item.fileName}}
                                                         class="btn btn-info btn-xs"
@@ -132,3 +136,23 @@
         <hr class="my-4">
     </div>
 </ng-template>
+
+<div *ngIf="openDeleteModal" class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="text-align: center; border-radius: 20px; margin-top: 5em">
+            <div class="modal-header" style="background-color: rgb(56, 56, 56);">
+                <div class="alert alert-primary"
+                    style="text-align: center; width:100%; color:#ffffff; background-color: #dc3545; border: none; margin-top: 1em" >
+                    Attention!</div>
+            </div>
+            <div class="modal-body" style="background-color: rgb(87, 86, 86)">
+                <p style="color:#ffffff">Do you definitely want to delete file {{modalVideoFilename}} from video group {{modalVideoCaption}}?</p>
+            </div>
+            <div class="modal-footer" style="background-color: rgb(56, 56, 56); text-align: center;">
+                <button type="button" class="btn btn-primary" (click)="hideDeleteModalDeny()">No</button>
+                <button type="button" class="btn btn-primary" (click)="hideDeleteModalConfirm()">Yes</button>
+                <button type="button" id="close-modal-delete" data-dismiss="modal" style="display: none">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>

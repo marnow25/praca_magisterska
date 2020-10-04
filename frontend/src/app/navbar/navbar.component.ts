@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HostListener } from '@angular/core';
+import { UserService } from '../shared/user.service'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -8,10 +10,16 @@ import { HostListener } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
   affix: boolean;
+  loggedIn: boolean
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.userService.isLoggedInNavbar()
+    this.userService.isLoggedInSubject.subscribe( (data) => {
+      this.loggedIn = data
+    })
+  }
 
   // Affix navbar when the window is scrolled
   @HostListener('window:scroll', []) onWindowScroll() {
@@ -21,12 +29,9 @@ export class NavbarComponent implements OnInit {
     this.affix = verticalOffset > 30;
   }
 
-  scrollToElementWithId(id: string) {
-    const element = document.getElementById(id);
-    if (element) {
-      const y = element.getBoundingClientRect().top + window.pageYOffset - 80;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
+  logout() {
+    this.userService.deleteToken()
+    this.userService.isLoggedInNavbar()
   }
 
 }

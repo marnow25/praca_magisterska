@@ -1,0 +1,30 @@
+.matrix-list-container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.rectangle {
+    width: 260px;
+    height: 180px;
+    background: grey;
+    margin: 10px;
+    border-radius: 20px;
+    border: 2px solid rgb(155, 155, 155);
+}
+
+.btn-group-xs > .btn, .btn-xs {
+    padding: .25rem .4rem;
+    font-size: .875rem;
+    line-height: .5;
+    border-radius: .2rem;
+}
+
+:host::ng-deep .progress{
+    background-color: unset !important;
+  }
+  
+  :host::ng-deep mat-seek-progress-control{
+    width: 100%;
+  }

@@ -125,7 +125,7 @@ app.get('/videos-list/:caption/:tags', async (req, res, next) => {
     let tmpArray
     await gfs.find({
         "metadata.caption": { $nin: [req.params.caption] }
-    }).toArray((err,files) => {
+    }).toArray((err, files) => {
         tmpArray = files
     })
     await gfs.find({
@@ -134,7 +134,7 @@ app.get('/videos-list/:caption/:tags', async (req, res, next) => {
     })
         .toArray((err, files) => {
             if (!files[0] || files.length === 0) {
-                const voidResponseArrayWithCaption = [{ metadata: { caption: req.params.caption}}]
+                const voidResponseArrayWithCaption = [{ metadata: { caption: req.params.caption } }]
                 tmpArray = tmpArray.concat(voidResponseArrayWithCaption)
                 tmpArray.sort((a, b) => a.metadata.caption.localeCompare(b.metadata.caption))
                 return res.status(200).json({
@@ -158,7 +158,7 @@ app.get('/videos-list/:caption/:dateFrom/:dateTill', async (req, res, next) => {
     let tmpArray
     await gfs.find({
         "metadata.caption": { $nin: [req.params.caption] }
-    }).toArray((err,files) => {
+    }).toArray((err, files) => {
         tmpArray = files
     })
 
@@ -171,7 +171,7 @@ app.get('/videos-list/:caption/:dateFrom/:dateTill', async (req, res, next) => {
     })
         .toArray((err, files) => {
             if (!files[0] || files.length === 0) {
-                const voidResponseArrayWithCaption = [{ metadata: { caption: req.params.caption}}]
+                const voidResponseArrayWithCaption = [{ metadata: { caption: req.params.caption } }]
                 tmpArray = tmpArray.concat(voidResponseArrayWithCaption)
                 tmpArray.sort((a, b) => a.metadata.caption.localeCompare(b.metadata.caption))
                 return res.status(200).json({
@@ -195,7 +195,7 @@ app.get('/videos-list/:caption/:tags/:dateFrom/:dateTill', async (req, res, next
     let tmpArray
     await gfs.find({
         "metadata.caption": { $nin: [req.params.caption] }
-    }).toArray((err,files) => {
+    }).toArray((err, files) => {
         tmpArray = files
     })
     await gfs.find({
@@ -208,7 +208,7 @@ app.get('/videos-list/:caption/:tags/:dateFrom/:dateTill', async (req, res, next
     })
         .toArray((err, files) => {
             if (!files[0] || files.length === 0) {
-                const voidResponseArrayWithCaption = [{ metadata: { caption: req.params.caption}}]
+                const voidResponseArrayWithCaption = [{ metadata: { caption: req.params.caption } }]
                 tmpArray = tmpArray.concat(voidResponseArrayWithCaption)
                 tmpArray.sort((a, b) => a.metadata.caption.localeCompare(b.metadata.caption))
                 return res.status(200).json({
@@ -226,15 +226,127 @@ app.get('/videos-list/:caption/:tags/:dateFrom/:dateTill', async (req, res, next
         })
 })
 
+
+// Filtering by caption, tags and date to list MATRIX purposes
+app.get('/videos-list-matrix/:caption/:tags/:dateFrom/:dateTill', (req, res, next) => {
+    const caption = req.params.caption
+    const splittedTags = req.params.tags.split('&')
+    const dateFrom = req.params.dateFrom
+    const dateTill = req.params.dateTill
+    if (caption === 'fakeCaption' && splittedTags[0] === 'fakeTags') {
+        gfs.find({
+            "metadata.date": {
+                $gte: req.params.dateFrom,
+                $lt: req.params.dateTill
+            }
+        }).toArray((err, files) => {
+            if (files[0] !== undefined || files.length !== 0) {
+                return res.status(200).json({
+                    success: true,
+                    files: files,
+                })
+
+            } else {
+                return res.status(200).json({
+                    success: false,
+                    files: [],
+                })
+            }
+        })
+    } else if (caption === 'fakeCaption' && splittedTags[0] !== 'fakeTags') {
+        gfs.find({
+            "metadata.tags": { $all: splittedTags },
+            "metadata.date": {
+                $gte: req.params.dateFrom,
+                $lt: req.params.dateTill
+            }
+        }).toArray((err, files) => {
+            if (files[0] !== undefined || files.length !== 0) {
+                return res.status(200).json({
+                    success: true,
+                    files: files,
+                })
+
+            } else {
+                return res.status(200).json({
+                    success: false,
+                    files: [],
+                })
+            }
+        })
+    } else if (splittedTags[0] === 'fakeTags' && caption !== 'fakeCaption') {
+        gfs.find({
+            "metadata.caption": req.params.caption,
+            "metadata.date": {
+                $gte: req.params.dateFrom,
+                $lt: req.params.dateTill
+            }
+        }).toArray((err, files) => {
+            if (files[0] !== undefined || files.length !== 0) {
+                return res.status(200).json({
+                    success: true,
+                    files: files,
+                })
+
+            } else {
+                return res.status(200).json({
+                    success: false,
+                    files: [],
+                })
+            }
+        })
+    } else {
+        gfs.find({
+            "metadata.caption": req.params.caption,
+            "metadata.tags": { $all: splittedTags },
+            "metadata.date": {
+                $gte: req.params.dateFrom,
+                $lt: req.params.dateTill
+            }
+        }).toArray((err, files) => {
+            if (files[0] !== undefined || files.length !== 0) {
+                return res.status(200).json({
+                    success: true,
+                    files: files,
+                })
+
+            } else {
+                return res.status(200).json({
+                    success: false,
+                    files: [],
+                })
+            }
+        })
+    }
+})
+
+
+// Filtering by filename and caption for FAVOURITE purposes
+
+app.post('/videos-list-favourite', async (req, res, next) => {
+    videosList = req.body.params.updates[0].value
+    let tmpArray = []
+    for (let key in videosList) { 
+        tmpArray.push(await gfs.find({
+            "filename": videosList[key].filename,
+            "metadata.caption": videosList[key].caption
+        }).toArray())
+    }
+    return res.status(200).json({
+        success: true,
+        files: tmpArray
+    })
+
+})
+
 /*****************************************************************/
 
 /* DOWNLOAD SECTION */
 
 // Download all files
 app.get('/video-all-download', (req, res, next) => {
-     gfs.find().toArray((err, files) => {
+    gfs.find().toArray((err, files) => {
         if (!files || files.length === 0) {
-            console.log('dupa')
             return res.status(200).json({
                 success: false,
                 message: 'No files available'
@@ -246,12 +358,14 @@ app.get('/video-all-download', (req, res, next) => {
                 if (!fs.existsSync(dir + 'frontend/src/assets/videos/' + files[key].metadata.caption + '/')) {
                     fs.mkdirSync(dir + 'frontend/src/assets/videos/' + files[key].metadata.caption + '/');
                 }
-                var fs_write_stream = fs.createWriteStream(path.join(dir, 'frontend/src/assets/videos/' + files[key].metadata.caption + '/' + files[key].filename))
-                var readstream = gfs.openDownloadStreamByName(files[key].filename)
-                readstream.pipe(fs_write_stream)
-                fs_write_stream.on('close', function () {
-                    //console.log('File: ' + files[key].filename + ' downloaded successfully!')
-                })
+                if (!fs.existsSync(dir + 'frontend/src/assets/videos/' + files[key].metadata.caption + '/' + files[key].filename)) {
+                    var fs_write_stream = fs.createWriteStream(path.join(dir, 'frontend/src/assets/videos/' + files[key].metadata.caption + '/' + files[key].filename))
+                    var readstream = gfs.openDownloadStreamByName(files[key].filename)
+                    readstream.pipe(fs_write_stream)
+                    fs_write_stream.on('close', function () {
+                        //console.log('File: ' + files[key].filename + ' downloaded successfully!')
+                    })
+                }
             }
             return res.status(200).json({
                 success: true,
@@ -262,6 +376,7 @@ app.get('/video-all-download', (req, res, next) => {
     })
 });
 
+// PROBABLY NOT NEEDED
 // Filtering by caption & download
 app.get('/video/:caption', (req, res, next) => {
     gfs.find({
@@ -274,7 +389,7 @@ app.get('/video/:caption', (req, res, next) => {
                     message: 'No files available',
                 });
             } else {
-                for ( key in files) {
+                for (key in files) {
                     if (!fs.existsSync(dir + '/videos/' + files[key].metadata.caption + '/')) {
                         fs.mkdirSync(dir + '/videos/' + files[key].metadata.caption + '/');
                     }
@@ -401,6 +516,36 @@ app.get('/video/:caption/:tags/:dateFrom/:dateTill', (req, res, next) => {
             }
         })
 })
+
+
+/* DELETE SECTION */
+app.get('/video-delete/:caption/:filename', async (req, res, next) => {
+    console.log(req.params.caption)
+    console.log(req.params.filename)
+    let obj_id
+    await gfs.find({
+        "metadata.caption": req.params.caption,
+        filename: req.params.filename
+    }).toArray(async (err, files) => {
+        let fileIdTmp = files[0]._id
+        obj_id = new mongoose.Types.ObjectId(fileIdTmp)
+        await gfs.delete(obj_id, function (err) {
+            if (err) {
+                return res.status(404).json({
+                    success: true,
+                    message: 'File not deleted.'
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                message: 'File successfully deleted.'
+            })
+        })
+    })
+
+})
+
+
 
 /*****************************************************************/
 

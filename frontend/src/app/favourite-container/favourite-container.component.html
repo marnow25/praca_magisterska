@@ -1,0 +1,84 @@
+<div class="favourite-list-container" *ngIf="renderComponent">
+    <div *ngIf="favouriteVideoList.length !== 0 else alertBlock" class="card" style="background-color: rgb(133, 133, 133);">
+        <div class="card-header">
+            <button type="button" class="btn btn-danger">Favourite Videos</button>
+        </div>
+        <div *ngFor="let item of favouriteVideoList; let i = index" class="card-body favourite-card-list-container"
+            style="background-color: rgb(87, 86, 86);">
+            <div class="card-body"
+                style="background-color: rgb(53, 53, 53); border-radius: 5px; margin-top: 10px; overflow: hidden;">
+                <div style="width: 100%; min-width: 1200px">
+                    <div style="float: left; width: 60%;">
+                        <div style="border: 1px solid white; margin: 2rem; ">
+                            <mat-video #video title={{favouriteVideoList[i].filename}} [autoplay]="false"
+                                [preload]="false" [fullscreen]="true" [download]="true" [showFrameByFrame]="true"
+                                [quality]="false" color="primary" spinner="split-ring" [overlay]="true"
+                                [keyboard]="false"
+                                src="assets/videos/{{favouriteVideoList[i].caption}}/{{favouriteVideoList[i].filename}}"
+                                id={{i}}_video_{{favouriteVideoList[i].caption}}_{{favouriteVideoList[i].camera}}_{{favouriteVideoList[i].filename}}
+                                [loop]="false" type="video/mp4">
+                            </mat-video>
+                        </div>
+                        <div class="buttons-container" style="position: relative; bottom: 2.2rem; right: 1rem;">
+                            <div class="col-12 text-right">
+                                <button id={{i}}_btn_0.25_{{item.caption}}_{{item.camera}}_{{item.filename}}
+                                    class="btn btn-info btn-xs"
+                                    (click)="changeSpeed(0.25, {id: i, caption: item.caption, camera: item.camera, fileName: item.filename })">0.25x</button>
+                                <button id={{i}}_btn_0.5_{{item.caption}}_{{item.camera}}_{{item.filename}}
+                                    class="btn btn-info btn-xs"
+                                    (click)="changeSpeed(0.5, {id: i, caption: item.caption, camera: item.camera, fileName: item.filename })">0.5x</button>
+                                <button id={{i}}_btn_1.0_{{item.caption}}_{{item.camera}}_{{item.filename}}
+                                    class="btn btn-info btn-xs"
+                                    (click)="changeSpeed(1, {id: i, caption: item.caption, camera: item.camera, fileName: item.filename })">1x</button>
+                                <button id={{i}}_btn_2.0_{{item.caption}}_{{item.camera}}_{{item.filename}}
+                                    class="btn btn-info btn-xs"
+                                    (click)="changeSpeed(2, {id: i, caption: item.caption, camera: item.camera, fileName: item.filename })">2x</button>
+                                <button id={{i}}_btn_5.0_{{item.caption}}_{{item.camera}}_{{item.filename}}
+                                    class="btn btn-info btn-xs"
+                                    (click)="changeSpeed(5, {id: i, caption: item.caption, camera: item.camera, fileName: item.filename })">5x</button>
+                                <button id={{i}}_btn_{{item.caption}}_{{item.camera}}_{{item.filename}}
+                                    class="btn btn-info btn-xs"
+                                    (click)="captureFrame({id: i, caption: item.caption, camera: item.camera, fileName: item.filename })">Capture
+                                    Frame</button>
+                                <canvas #canvas id={{i}}_canvas_{{item.caption}}_{{item.camera}}_{{item.filename}}
+                                    style="display: none"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width: 40%; float: right">
+                        <div class="card"
+                            style="background-color: rgb(133, 133, 133); margin: 2rem; margin-left: 0px; height: calc(100vh - 445px); min-height: 54.5vh; ">
+                            <div class="card-header">
+                                <button type="button" class="btn btn-danger">Video Detailed Info</button>
+                            </div>
+                            <div class="card-body" style="background-color: rgb(88, 88, 88)">
+                                <ul class="list-group">
+                                    <li class="list-group-item" style="font-style: oblique;"><strong>Video
+                                            Group</strong>: {{favouriteVideoList[i].caption}}</li>
+                                    <li class="list-group-item" style="font-style: oblique;"><strong>Filename</strong>:
+                                        {{favouriteVideoList[i].filename}}</li>
+                                    <li class="list-group-item" style="font-style: oblique;"><strong>Camera</strong>:
+                                        {{favouriteVideoList[i].camera}}</li>
+                                    <li class="list-group-item" style="font-style: oblique; word-break: normal">
+                                        <strong>Tags</strong>: {{splitTags(favouriteVideoList[i].tags)}} </li>
+                                    <li class="list-group-item" style="font-style: oblique; word-break: normal">
+                                        <strong>Date</strong>: {{splitDate(favouriteVideoList[i].date)}}</li>
+                                </ul>
+                                <button type="button" class="btn btn-primary" style="float: right; bottom: 0; margin-top: 1rem; margin-bottom: 1rem;" (click)="unfavouriteVideo({caption: item.caption, filename: item.filename })">Unfavourite</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #alertBlock>
+    <div class="jumbotron" style="margin: 2vw 3vw 3vw 3vw;">
+        <h2 style="color:#202529; margin: 0">Attention!</h2>
+        <p class="lead">There are no videos in your favourite list. Please expand it. </p>
+        <hr class="my-4">
+    </div>
+</ng-template>

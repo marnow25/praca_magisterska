@@ -21,7 +21,7 @@ export class SignInComponent implements OnInit {
 
   ngOnInit() {
     if(this.userService.isLoggedIn()) {
-      this.router.navigateByUrl('/userprofile');
+      this.router.navigateByUrl('');
     }
   }
 
@@ -29,10 +29,12 @@ export class SignInComponent implements OnInit {
     this.userService.login(form.value).subscribe(
       res => {
         this.userService.setToken(res['token']);
-        this.router.navigateByUrl('/userprofile')
+        this.router.navigateByUrl('')
+        this.userService.isLoggedInNavbar()
       },
       err => {
         this.serverErrorMessage = err.error.message;
+        this.userService.isLoggedInNavbar()
       }
     );
   }

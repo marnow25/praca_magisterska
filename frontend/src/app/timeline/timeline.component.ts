@@ -1,4 +1,9 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { FavouriteService } from '../shared/favourite.service'
+import { FileService } from '../shared/file.service'
+import { UserService } from '../shared/user.service'
+
+declare var $: any;
 
 @Component({
   selector: 'app-timeline',
@@ -10,15 +15,24 @@ export class TimelineComponent implements OnInit, OnChanges {
   camerasArray;
   cameraVideosGroupArray;
   restoreDefaultPositionDrag = false
+  openDeleteModal = false
+  modalVideoCaption
+  userDetails
+  modalVideoFilename
+  login
 
   @Input()
   videosArray;
 
-  constructor() { }
+  constructor(private favouriteService: FavouriteService, private fileService: FileService, private userService: UserService) { }
 
   ngOnChanges() {
     this.camerasArray = this.countCameras(this.videosArray)
     this.cameraVideosGroupArray = this.divideVideosByCamera(this.camerasArray, this.videosArray)
+    this.userService.getUserProfile().subscribe( data => {
+      this.userDetails = data["user"]
+      this.login = data["user"]["login"]
+    })
   }
 
   ngOnInit() {
@@ -93,5 +107,37 @@ export class TimelineComponent implements OnInit, OnChanges {
   myFunction() {
     this.restoreDefaultPositionDrag = true
   }
+
+  deleteVideo(videoDetails) {
+    console.log(this.userDetails)
+    console.log(videoDetails)
+  }
+
+  favouriteVideo(videoDetails) {
+    console.log(this.userDetails)
+    console.log(videoDetails)
+    this.favouriteService.favouriteFile(this.userDetails, videoDetails)
+  }
+
+  modalDeleteVideo(videoData) {
+    this.modalVideoCaption = videoData.caption
+    this.modalVideoFilename = videoData.fileName
+    this.openDeleteModal = true
+    setTimeout(() => {
+      $("#deleteModal").modal('show');
+    }, 500);
+  }
+
+  hideDeleteModalDeny() {
+    document.getElementById('close-modal-delete').click();
+  }
+
+  hideDeleteModalConfirm() {
+    this.fileService.deleteFile(this.modalVideoCaption, this.modalVideoFilename)
+    this.favouriteService.deleteFileFromFavouriteList(this.modalVideoCaption, this.modalVideoFilename)
+    this.fileService.showAllVideosList()
+    document.getElementById('close-modal-delete').click();
+  }
+
 
 }
