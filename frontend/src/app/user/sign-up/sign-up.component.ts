@@ -16,7 +16,7 @@ export class SignUpComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
-    if(this.userService.isLoggedIn()) {
+    if (this.userService.isLoggedIn()) {
       this.router.navigateByUrl('');
     }
   }
@@ -30,7 +30,6 @@ export class SignUpComponent implements OnInit {
       },
       err => {
         if (err.status === 422) {
-          console.log(err)
           this.serverErrorMessage = err.error.join('<br/>');
         }
         else

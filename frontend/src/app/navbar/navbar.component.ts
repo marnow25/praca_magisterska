@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { UserService } from '../shared/user.service'
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -14,9 +13,9 @@ export class NavbarComponent implements OnInit {
 
   constructor(private userService: UserService) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.userService.isLoggedInNavbar()
-    this.userService.isLoggedInSubject.subscribe( (data) => {
+    this.userService.isLoggedInSubject.subscribe((data) => {
       this.loggedIn = data
     })
   }

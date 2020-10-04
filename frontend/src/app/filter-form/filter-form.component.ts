@@ -31,8 +31,6 @@ export class FilterFormComponent implements OnInit {
     })
   }
 
-
-
   public atLeastOneValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
     let controls = control.controls;
     if (controls) {
@@ -47,7 +45,6 @@ export class FilterFormComponent implements OnInit {
         }
       }
     };
-
   }
 
   onSubmit(form) {
@@ -101,7 +98,7 @@ export class FilterFormComponent implements OnInit {
     }
   }
 
-  deleteLocalStorage(){
+  deleteLocalStorage() {
     window.localStorage.removeItem('tags' + this.videosCaption)
     window.localStorage.removeItem('startDate' + this.videosCaption)
     window.localStorage.removeItem('endDate' + this.videosCaption)

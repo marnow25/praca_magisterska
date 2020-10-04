@@ -29,7 +29,7 @@ export class TimelineComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.camerasArray = this.countCameras(this.videosArray)
     this.cameraVideosGroupArray = this.divideVideosByCamera(this.camerasArray, this.videosArray)
-    this.userService.getUserProfile().subscribe( data => {
+    this.userService.getUserProfile().subscribe(data => {
       this.userDetails = data["user"]
       this.login = data["user"]["login"]
     })
@@ -108,14 +108,7 @@ export class TimelineComponent implements OnInit, OnChanges {
     this.restoreDefaultPositionDrag = true
   }
 
-  deleteVideo(videoDetails) {
-    console.log(this.userDetails)
-    console.log(videoDetails)
-  }
-
   favouriteVideo(videoDetails) {
-    console.log(this.userDetails)
-    console.log(videoDetails)
     this.favouriteService.favouriteFile(this.userDetails, videoDetails)
   }
 

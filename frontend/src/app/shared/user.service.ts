@@ -21,7 +21,7 @@ export class UserService {
     this.isLoggedInSubject.next(data);
   }
 
-  noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True'}) };
+  noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };
 
   constructor(private http: HttpClient) { }
 

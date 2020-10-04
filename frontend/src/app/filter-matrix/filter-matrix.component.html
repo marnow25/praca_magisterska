@@ -2,7 +2,8 @@
     <div style="text-align:center;">
         <form [formGroup]="filterFormGroup" (ngSubmit)="onSubmit(filterFormGroup)">
             <fieldset formGroupName="notification">
-                <div *ngIf="filterFormGroup.get('notification')?.errors?.atLeastOneRequired" class="alert alert-primary" role="alert" style="width: 50%; margin-top: 1em;margin-left: 25%;">
+                <div *ngIf="filterFormGroup.get('notification')?.errors?.atLeastOneRequired" class="alert alert-primary"
+                    role="alert" style="width: 50%; margin-top: 1em;margin-left: 25%;">
                     {{filterFormGroup.get('notification')?.errors?.atLeastOneRequired.text}}
                 </div>
                 <div class="tags-form">
@@ -44,15 +45,18 @@
                     <button class="btn btn-secondary" type="reset" (click)="revert()"
                         style="text-align:right ;margin-right:1vw">Reset all filters</button>
                     <button class="btn btn-danger" type="submit" style="text-align:right;"
-                        [disabled]="filterFormGroup.get('notification')?.errors?.atLeastOneRequired">Apply filters</button>
+                        [disabled]="filterFormGroup.get('notification')?.errors?.atLeastOneRequired">Apply
+                        filters</button>
                 </div>
             </fieldset>
 
-            <div *ngIf="notFoundItemsAlert" class="alert alert-warning" role="alert" style="width: 70%; margin-top: 2em;margin-left: 15%;">
+            <div *ngIf="notFoundItemsAlert" class="alert alert-warning" role="alert"
+                style="width: 70%; margin-top: 2em;margin-left: 15%;">
                 No videos matching your criteria currently!
             </div>
 
-            <div *ngIf="foundItemsAlert" class="alert alert-primary" role="alert" style="width: 70%; margin-top: 2em;margin-left: 15%;">
+            <div *ngIf="foundItemsAlert" class="alert alert-primary" role="alert"
+                style="width: 70%; margin-top: 2em;margin-left: 15%;">
                 There are {{numberOfItemsFound}} videos matching your criteria!
             </div>
 

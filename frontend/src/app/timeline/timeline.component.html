@@ -80,7 +80,7 @@
                                                     <button
                                                         id={{i}}_favourite_{{item.caption}}_{{item.camera}}_{{item.fileName}}
                                                         class="btn btn-success btn-xs" style="margin-right: 0.5rem;"
-                                                        (click)="favouriteVideo({caption: item.caption, fileName: item.fileName })">Favourite</button>
+                                                        (click)="favouriteVideo({caption: item.caption, filename: item.fileName })">Favourite</button>
                                                     <button
                                                         id={{i}}_btn_0.25_{{item.caption}}_{{item.camera}}_{{item.fileName}}
                                                         class="btn btn-info btn-xs"
@@ -142,11 +142,12 @@
         <div class="modal-content" style="text-align: center; border-radius: 20px; margin-top: 5em">
             <div class="modal-header" style="background-color: rgb(56, 56, 56);">
                 <div class="alert alert-primary"
-                    style="text-align: center; width:100%; color:#ffffff; background-color: #dc3545; border: none; margin-top: 1em" >
+                    style="text-align: center; width:100%; color:#ffffff; background-color: #dc3545; border: none; margin-top: 1em">
                     Attention!</div>
             </div>
             <div class="modal-body" style="background-color: rgb(87, 86, 86)">
-                <p style="color:#ffffff">Do you definitely want to delete file {{modalVideoFilename}} from video group {{modalVideoCaption}}?</p>
+                <p style="color:#ffffff">Do you definitely want to delete file {{modalVideoFilename}} from video group
+                    {{modalVideoCaption}}?</p>
             </div>
             <div class="modal-footer" style="background-color: rgb(56, 56, 56); text-align: center;">
                 <button type="button" class="btn btn-primary" (click)="hideDeleteModalDeny()">No</button>

@@ -49,7 +49,7 @@ export class FavouriteService {
     let params = new HttpParams();
     params = params.append('caption', videoCaption);
     params = params.append('filename', videoFilename);
-    return this.http.post(environment.apiBaseUrl + '/api/delete-favourite-item/', { params: params }, { observe: "response" }).subscribe(data => { },  err => { console.log(err) })
+    return this.http.post(environment.apiBaseUrl + '/api/delete-favourite-item/', { params: params }, { observe: "response" }).subscribe(data => { }, err => { console.log(err) })
   }
 
   public parseFavouriteVideosList(videosList) {

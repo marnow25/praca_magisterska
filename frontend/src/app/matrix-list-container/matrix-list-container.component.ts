@@ -18,20 +18,18 @@ export class MatrixListContainerComponent implements OnInit {
   listVideosDividedArray
   userDetails
   login
-
   modalVideoCaption
   modalVideoFilename
   openVideoModal = false
   openDeleteModal = false
-  @ViewChild(FilterMatrixComponent, {static: false}) private childFilterMatrixComponent: FilterMatrixComponent;
-  
+  @ViewChild(FilterMatrixComponent, { static: false }) private childFilterMatrixComponent: FilterMatrixComponent;
 
   constructor(private fileService: FileService, private userService: UserService, private changeDetectorRef: ChangeDetectorRef, private favouriteService: FavouriteService) { }
 
   ngOnInit() {
     this.fileService.showAllVideosList()
     this.fileService.downloadAllVideos()
-    this.userService.getUserProfile().subscribe( data => {
+    this.userService.getUserProfile().subscribe(data => {
       this.userDetails = data["user"]
       this.login = data["user"]["login"]
     })
@@ -39,10 +37,7 @@ export class MatrixListContainerComponent implements OnInit {
       this.videosArray = data
       this.captionsArray = this.populateCaptionsArray(this.videosArray)
       this.listVideosDividedArray = this.divideVideosByCaption(this.captionsArray, this.videosArray)
-      this.changeDetectorRef.detectChanges();
-      console.log(this.captionsArray)
-      console.log(this.listVideosDividedArray)
-      console.log(this.videosArray)
+      this.changeDetectorRef.detectChanges()
     })
   }
 
@@ -105,7 +100,6 @@ export class MatrixListContainerComponent implements OnInit {
   }
 
   favouriteVideo(videoData) {
-    console.log(this.userDetails)
     this.favouriteService.favouriteFile(this.userDetails, videoData)
   }
 

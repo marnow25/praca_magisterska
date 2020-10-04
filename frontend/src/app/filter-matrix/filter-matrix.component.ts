@@ -36,7 +36,6 @@ export class FilterMatrixComponent implements OnInit {
     })
     this.fileService.matrixFilterListSubject.subscribe((data) => {
       this.filterMatrixData = data
-      console.log(this.filterMatrixData)
       if (this.filterMatrixData.length !== 0) {
         this.markMatchingVideos()
       } else {

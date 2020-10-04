@@ -8,19 +8,19 @@ import { MatVideoModule } from 'mat-video';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import {
-  NgxMatDatetimePickerModule, 
-  NgxMatNativeDateModule, 
-  NgxMatTimepickerModule 
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+  NgxMatTimepickerModule
 } from '@angular-material-components/datetime-picker';
 import { DragDropModule } from '@angular/cdk/drag-drop'
 
 // angular materials
-import { 
-  MatNativeDateModule, 
-  MatInputModule, 
+import {
+  MatNativeDateModule,
+  MatInputModule,
   MatIconModule,
   MatButtonModule
-  } from '@angular/material';
+} from '@angular/material';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
 
@@ -57,14 +57,14 @@ import { AuthInterceptor } from './auth/auth.interceptor'
     SignInComponent,
     MainPageComponent,
     UploadDownloadComponent,
-    FileSelectDirective, 
-    FileDropDirective, 
-    TimelineComponent, 
-    TimelinesContainerComponent, 
-    FilterFormComponent, 
-    BannerComponent, 
-    MatrixListContainerComponent, 
-    FilterMatrixComponent, 
+    FileSelectDirective,
+    FileDropDirective,
+    TimelineComponent,
+    TimelinesContainerComponent,
+    FilterFormComponent,
+    BannerComponent,
+    MatrixListContainerComponent,
+    FilterMatrixComponent,
     FavouriteContainerComponent,
   ],
   imports: [

@@ -10,25 +10,25 @@ import { FileService } from '../shared/file.service';
 })
 export class FavouriteContainerComponent implements OnInit {
 
-  constructor(private userService: UserService, private favouriteService: FavouriteService, private fileService: FileService, private changeDetectorRef: ChangeDetectorRef ) { }
+  constructor(private userService: UserService, private favouriteService: FavouriteService, private fileService: FileService, private changeDetectorRef: ChangeDetectorRef) { }
 
   userData
   favouriteVideoList
   renderComponent = false
 
   ngOnInit() {
-    this.userService.getUserProfile().subscribe( (data) => {
+    this.userService.getUserProfile().subscribe((data) => {
       this.userData = data['user']
       this.favouriteService.getFavouriteVideosList(this.userData)
     })
-    this.fileService.favouriteFilterListSubject.subscribe( (data) => {
+    this.fileService.favouriteFilterListSubject.subscribe((data) => {
       this.changeDetectorRef.detectChanges();
-      if(data.length !== 0) {
+      if (data.length !== 0) {
         this.favouriteVideoList = this.favouriteService.parseFavouriteVideosList(data)
         this.renderComponent = true
       } else {
-      this.favouriteVideoList = data
-      this.renderComponent = true
+        this.favouriteVideoList = data
+        this.renderComponent = true
       }
     })
   }

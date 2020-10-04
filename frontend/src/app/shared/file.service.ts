@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { environment } from '../../environments/environment'
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
@@ -55,7 +55,7 @@ export class FileService {
   }
 
   public downloadAllVideos() {
-    return this.http.get(environment.apiBaseUrl + '/video-all-download', { observe: "response" }).subscribe(data => { },  err => { console.log(err) })
+    return this.http.get(environment.apiBaseUrl + '/video-all-download', { observe: "response" }).subscribe(data => { }, err => { console.log(err) })
   }
 
   public filterVideosList(caption: string, tags?: Array<string>, dateFrom?, dateTill?) {
@@ -143,7 +143,7 @@ export class FileService {
 
   public deleteFile(caption, filename) {
     this.http.get(environment.apiBaseUrl + '/video-delete' + '/' + caption + '/' + filename, { observe: "response" }).subscribe(
-      (data) => { },  err => { console.log(err) })
+      (data) => { }, err => { console.log(err) })
   }
 
   public filterMatrixVideosList(caption: string, tags: Array<string>, dateFrom, dateTill) {

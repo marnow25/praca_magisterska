@@ -20,7 +20,7 @@ export class SignInComponent implements OnInit {
   serverErrorMessage: string;
 
   ngOnInit() {
-    if(this.userService.isLoggedIn()) {
+    if (this.userService.isLoggedIn()) {
       this.router.navigateByUrl('');
     }
   }

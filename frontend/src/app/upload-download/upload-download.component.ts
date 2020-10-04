@@ -16,7 +16,7 @@ export class UploadDownloadComponent implements OnInit {
   uploadSuccessAlert = false
   fileSizeAlert = false
 
-  constructor(private fileService: FileService, private formBuilder: FormBuilder, private httpClient: HttpClient) { 
+  constructor(private fileService: FileService, private formBuilder: FormBuilder, private httpClient: HttpClient) {
     this.fileService.uploadSuccessFlagSubject.subscribe(data => {
       this.uploadSuccessAlert = data
     })
@@ -38,7 +38,7 @@ export class UploadDownloadComponent implements OnInit {
   }
 
   onFileSelect(event) {
-    if (event.target.files.length > 0 ) {
+    if (event.target.files.length > 0) {
       if (event.target.files[0].size <= 10485760) {
         this.fileSizeAlert = false
         const file = event.target.files[0];
@@ -54,7 +54,6 @@ export class UploadDownloadComponent implements OnInit {
       this.fileService.updateUploadFailFlagSubject(false);
       const formData = new FormData();
       const file = this.uploadFormGroup.get('profile').value
-      console.log(file)
       formData.append('caption', this.uploadFormGroup.get('captionControl').value)
       let tmpArray = this.uploadFormGroup.get('tagsControl').value
       tmpArray = tmpArray.split(' ')
@@ -73,7 +72,7 @@ export class UploadDownloadComponent implements OnInit {
     } else {
       this.fileService.updateUploadFailFlagSubject(true);
       this.fileService.updateUploadSuccessFlagSubject(false);
-     }
+    }
   }
 
 }
