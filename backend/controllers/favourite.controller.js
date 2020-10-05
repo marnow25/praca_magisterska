@@ -3,9 +3,6 @@ const mongoose = require('mongoose')
 const Favourite = mongoose.model('Favourite')
 
 module.exports.saveFavourite = (req, res, next) => {
-    console.log('jestem')
-    console.log(req.body.params.updates)
-    //console.log(req.params.updates)
     var favourite = new Favourite()
     favourite.login = req.body.params.updates[0].value
     favourite.email = req.body.params.updates[1].value
@@ -49,10 +46,6 @@ module.exports.deleteFromFavouritesListDepeningOnUser = (req, res, next) => {
     let email = req.body.params.updates[1].value
     let caption = req.body.params.updates[2].value
     let filename = req.body.params.updates[3].value
-    console.log(login)
-    console.log(email)
-    console.log(caption)
-    console.log(filename)
     Favourite.deleteOne({ login: login, email: email, caption: caption, filename: filename }, (err) => {
         if(!err) { 
             return res.status(200).json({
@@ -69,8 +62,6 @@ module.exports.deleteFromFavouritesListDepeningOnUser = (req, res, next) => {
 module.exports.deleteFromFavouritesList = (req, res, next) => {
     let caption = req.body.params.updates[0].value
     let filename = req.body.params.updates[1].value
-    console.log(caption)
-    console.log(filename)
     Favourite.deleteMany({ caption: caption, filename: filename }, (err) => {
         if(!err) { 
             return res.status(200).json({

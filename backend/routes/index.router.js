@@ -11,6 +11,6 @@ router.post('/favourite', jwtHelper.verifyJwtToken, ctrlFavourite.saveFavourite)
 router.post('/favouriteList', jwtHelper.verifyJwtToken, ctrlFavourite.getFavouritesList);
 router.post('/delete-favourite-item-on-user', jwtHelper.verifyJwtToken, ctrlFavourite.deleteFromFavouritesListDepeningOnUser);
 router.post('/delete-favourite-item', jwtHelper.verifyJwtToken, ctrlFavourite.deleteFromFavouritesList);
-router.get('/userProfile', jwtHelper.verifyJwtToken, ctrlUser.userProfile); // private route (only with JWT)
+router.get('/userProfile', jwtHelper.verifyJwtToken, ctrlUser.userProfile);
 
 module.exports = router;
