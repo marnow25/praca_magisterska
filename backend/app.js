@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 require('./config/config')
 const fs = require('fs')
-var dir = 'C:/Users/Marcin/Desktop/magisterka/projekt/'
 require('./models/db')
+
 
 // Server connection
 const connect = mongoose.createConnection(process.env.MONGODB_URI, {
@@ -32,6 +32,10 @@ const multer = require('multer')
 const GridFsStorage = require('multer-gridfs-storage');
 const path = require('path')
 
+//one folder up to reach frontend files
+var dir = path.join(__dirname, '../')
+
+// server declaration
 var app = express()
 
 // Middleware
